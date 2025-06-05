@@ -1,0 +1,82 @@
+/******************************************************************************
+* Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
+* Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
+* SPDX-License-Identifier: MIT
+******************************************************************************/
+
+/*
+ * /include/ "system-conf.dtsi"
+ * Adding directly contents of system-conf file until CR-1139794 is fixed
+ */
+/ {
+        chosen {
+                bootargs = "console=ttyAMA0  earlycon=pl011,mmio32,0xFF000000,115200n8 clk_ignore_unused root=/dev/mmcblk0p2 rw rootwait cma=512M";
+                stdout-path = "serial0:115200n8";
+        };
+};
+
+/ {
+	chosen {
+		stdout-path = "serial0:115200";
+	};
+
+    reserved-memory {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        ranges;
+        pl_ddr: buffer@0 {
+                no-map;
+                reg = <0x08 0x00 0x00 0x80000000>;
+        };
+        lpddr_memory: buffer@1 {
+                no-map;
+                reg = <0x500 0x0 0x2 0x0>;
+        };
+    }; 
+};
+
+&usb0 {
+	/delete-property/ xlnx,usb-polarity;
+	/delete-property/ xlnx,usb-reset-mode;
+	xlnx,usb-reset = <0x2faf080>;
+ };
+
+&dwc3_0 {
+	maximum-speed = "high-speed";
+	dr_mode = "host";
+	/delete-property/ phy-names;
+	/delete-property/ phys;
+ };
+
+&sdhci1 {
+	no-1-8-v;
+	bus-width = <4>;
+	disable-wp;
+	non-removable;
+	max-frequency = <10000000>;
+	/* Do not run SD in HS mode from bootloader */
+	sdhci-caps-mask = <0 0x200000>;
+	sdhci-caps = <0 0>;
+	keep-power-in-suspend;
+	status = "okay";
+};
+
+&gem0 {
+	phy-mode = "rgmii-id";
+	status = "okay";
+	phy-handle = <&ethernet_phy>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+	mdio {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		ethernet_phy: ethernet-phy@0 {
+			compatible = "marvell,88e1510";
+			device_type = "ethernet-phy";
+			reg = <0>;
+		};
+	};
+};
+
+
+

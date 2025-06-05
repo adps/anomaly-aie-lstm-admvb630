@@ -1,0 +1,9 @@
+{
+  "name": "prj_single_model_2buffs",
+  "type": "HLS",
+  "configuration": {
+    "componentType": "HLS",
+    "configFiles": ["pl_kernels\/s2mm.cfg"],
+    "work_dir": "s2mm"
+  }
+}
