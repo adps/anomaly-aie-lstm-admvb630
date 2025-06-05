@@ -145,7 +145,7 @@ Now, set up the board as follows:
  - Insert the microSD card into the VB630. Take care with the delicate mechanism of the card holder.
  - Set SW2[1:8]=01010001 on ADM-VB630 to boot from the microSD card and with VPX IO enabled.
  - Set SW1-5=1 on the VB630 to enable VPX JTAG.
- - Power up the board. Open a serial terminal at 115.2kbps (with XON/OFF control flow deactivated) and connect to teh COM port associated with the board. You should see the board booting from the uSD card.
+ - Power up the board. Open a serial terminal at 115.2kbps (with XON/OFF control flow deactivated) and connect to the COM port associated with the board. You should see the board booting from the uSD card.
 
 ### Running the Hardware Model from the Board's Linux Terminal
 
