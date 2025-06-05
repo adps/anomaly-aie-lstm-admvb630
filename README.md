@@ -6,9 +6,10 @@ The objective of this work is to investigate a potential Space-deployable hardwa
 
 ## Requirements
 
-| Tool Version | Vitis 2024.1 |
-|--------------|--------------|
-| Board        | ADM-VB630/DEV |
+|              |                  |
+|--------------|------------------|
+| Tool Version | Vitis 2024.1     |
+| Board        | ADM-VB630/DEV    |
 
 
 ## Overview
