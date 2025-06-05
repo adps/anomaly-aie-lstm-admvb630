@@ -6,8 +6,9 @@ The objective of this work is to investigate a potential Space-deployable hardwa
 
 ## Requirements
 
-| Tool Version    | Vitis 2024.1      |
-| Board           | ADM-VB630/DEV      |
+| Tool Version | Vitis 2024.1 |
+|--------------|--------------|
+| Board        | ADM-VB630/DEV |
 
 
 ## Overview
@@ -195,9 +196,9 @@ Two targets (`visualize_sw` and `visualize_hw`) in the Makefile can be used to v
 
 ## Section 5: Recompiling the Project
 
-**IMPORTANT**: Before recompiling the project ensure you have installed Vitis&trade; 2023.2 software. This software includes all the embedded base platforms, including the VEK280 base platform used in this project. Additionally, make sure you have downloaded the Common Images for Embedded Vitis Platforms from the following link:
+**IMPORTANT**: Before recompiling the project ensure you have installed Vitis&trade; 2024.1 software. Additionally, make sure you have downloaded the Common Images for Embedded Vitis Platforms from the following link:
 
-https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-platforms/2023-2.html
+https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-platforms/2024-1.html
 
 The 'common image' package contains a prebuilt Linux kernel and root file system that can be used with the Versal board for embedded design development using Vitis.
 
