@@ -314,28 +314,31 @@ def execute_remote_script(hostname, port, username, password, local_script_path,
         stdin, stdout, stderr = ssh.exec_command(sudo_command)
         stdout.channel.recv_exit_status()  # Ensure the command has finished
 
-        # Print command output and errors
-        print("STDOUT:")
         print(stdout.read().decode())
-
-        print("STDERR:")
         print(stderr.read().decode())
 
-        # Check for errors in the script execution
-        error_output = stderr.read().decode()
-        if error_output:
-            print(f"[anomaly_aie_lstm] Error during script execution: {error_output}")
-            return
+        # Copy output from root-owned folder to accessible folder before sftp
+        accessible_remote_output_dir = f'/home/{username}/output/'
+        ssh.exec_command(f'mkdir -p {accessible_remote_output_dir}')
+        copy_command = f"echo '{password}' | sudo -S bash -c 'cp {remote_output_dir}/* {accessible_remote_output_dir}/'"
+        stdin, stdout, stderr = ssh.exec_command(copy_command)
+        stdout.channel.recv_exit_status()  # Ensure the command has finished
+
+        print(stdout.read().decode())
+        print(stderr.read().decode())
+
+        # Change the ownership of the accessible output folder
+        ssh.exec_command(f"echo '{password}' | sudo -S chown -R {username}:{username} {accessible_remote_output_dir}")
 
         # Check if the remote output directory exists
         try:
-            sftp.chdir(remote_output_dir)
+            sftp.chdir(accessible_remote_output_dir)
         except FileNotFoundError:
-            print(f"[anomaly_aie_lstm] Remote output directory {remote_output_dir} does not exist.")
+            print(f"[anomaly_aie_lstm] Remote output directory {accessible_remote_output_dir} does not exist.")
             return
 
         # List all files in the remote directory
-        files = sftp.listdir(remote_output_dir)
+        files = sftp.listdir(accessible_remote_output_dir)
 
         # Ensure local output directory exists
         if not os.path.exists(local_output_dir):
@@ -343,7 +346,7 @@ def execute_remote_script(hostname, port, username, password, local_script_path,
 
         # Download each file from the remote directory to the local directory
         for file in files:
-            remote_file_path = os.path.join(remote_output_dir, file)
+            remote_file_path = os.path.join(accessible_remote_output_dir, file)
             local_file_path = os.path.join(local_output_dir, file)
             sftp.get(remote_file_path, local_file_path)
             print(f"[anomaly_aie_lstm] Copied {remote_file_path} to {local_file_path}")
@@ -356,6 +359,7 @@ def execute_remote_script(hostname, port, username, password, local_script_path,
     finally:
         # Close SSH connection
         ssh.close()
+
 
 def plot_channel_hw(self, channel_id, plot_train=False, plot_errors=True):
         """
